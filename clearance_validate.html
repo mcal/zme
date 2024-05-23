@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Vatsim Route Validator</title>
+    
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Clearance for <span id="callsign"></span><span class="badge badge-danger rounded-pill" id="heavyWeight"></span></h1>
+                    </div>
+
+                    <div class="row d-none" id="alertContainer">
+                        <div class="mb-4">
+                            <div id="alertBorder" class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div id="alertHeader" class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                Alerts</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="alerts">
+                                                No alerts
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-check fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <div class="row">
+                                    <!-- Earnings (Annual) Card Example -->
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                        Departure</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="depAirportName"></span></div>                                                    
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-plane-departure fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <div><a id="depTaxiChart" class="text-info">Taxi Chart</a></div>
+                                            <div><a id="depProcedures" class="text-info">Departure Procedures</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-danger shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                        Arrival</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="arrAirportName"></span></div>
+                                                    
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-plane-arrival fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <div><a id="arrTaxiChart" class="text-info">Taxi Chart</a></div>
+                                            <div><a id="arrProcedures" class="text-info">Arrival Procedures</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">                                
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">                                        
+                                        <div class="card-body">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Aircraft</div>
+                                            <div class="d-flex justify-content-start">
+                                                <span class="p-2" id="make"></span>
+                                                <span class="p-2" id="model"></span>
+                                                <span class="p-2 text-info" id="engineType"></span>
+                                            </div>
+                                            <div class="d-flex justify-content-start">                                                
+                                                <span class="p-2" id="engineCountLabel">
+                                                    Engine Count: <span id="engineCount"></span>
+                                                </span>                                         
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">                                                                        
+                                        <div class="card-body"> 
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Flight</div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Altitude</span>
+                                                <span id="routeFiledAltitude"></span> 
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Squawk</span>
+                                                <span class="squawkCode"></span> 
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Route</span>
+                                                <div class="text-warning" id="routeFiled"></div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="card-footer text-muted">
+                                            <div><a id="routeAnalyzerLink" class="text-info">Route Analyzer</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4 d-none" id="initFixContainer">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Initial Departure Info</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-start">
+                                        <span class="p-2">Initial Altitude</span>
+                                        <div class="p-2" id="initAltitude">
+                                        </div>
+                                    </div>                                    
+                                    <div id="initFixContent">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Phraseology</h6>
+                                </div>
+                                <div class="card-body">
+                                    
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                          <button class="nav-link active" id="nav-clearanceIfr-tab" data-bs-toggle="tab" data-bs-target="#nav-clearanceIfr" type="button" role="tab" aria-controls="nav-clearanceIfr" aria-selected="true">IFR Clearance</button>
+                                          <button class="nav-link" id="nav-clearanceVfr-tab" data-bs-toggle="tab" data-bs-target="#nav-clearanceVfr" type="button" role="tab" aria-controls="nav-clearanceVfr" aria-selected="false">VFR Clearance</button>
+                                          <button class="nav-link" id="nav-clearanceReadback-tab" data-bs-toggle="tab" data-bs-target="#nav-clearanceReadback" type="button" role="tab" aria-controls="nav-clearanceReadback" aria-selected="false">Readback</button>                                          
+                                          <button class="nav-link" id="nav-takeoff-tab" data-bs-toggle="tab" data-bs-target="#nav-takeoff" type="button" role="tab" aria-controls="nav-takeoff" aria-selected="false">Takeoff</button>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-clearanceIfr" role="tabpanel" aria-labelledby="nav-clearanceIfr-tab" tabindex="0">
+                                            <div>Cleared to <strong><span id="clearanceArrival"></span></strong></div>
+                                            <div><strong><span id="sid_dep">[SID DEP]</span> Departure, <span id="useTransition"><span id="sid_trans">[TRANS]</span> transition</span>, then as filed.</strong></div>
+                                            <div>Climb and maintain <strong><span id="clearanceInitAlt"></span></strong>. Expect <strong><span id="clearanceFiledAltitude"></span></strong> 10 minutes after</strong></div>
+                                            <div>Departure Frequency [XXX.XX]</div>
+                                            <div>Squawk <strong><span class="squawkCode">XXXX</span></strong></div>
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-clearanceVfr" role="tabpanel" aria-labelledby="nav-clearanceVfr-tab" tabindex="0">
+                                            ...
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-clearanceReadback" role="tabpanel" aria-labelledby="nav-clearanceReadback-tab" tabindex="0">
+                                            <div>Readback Correct. ATIS Information [CODE] Current. Altimeter <span id="altimeter">[ALT]</span>.</div>                                            
+                                            <div>[Push and Start at own discretion. Call when ready for taxi] OR [Call for push]</div>
+                                            <div>Expect Runway [RUNWAY]</div>                                            
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-takeoff" role="tabpanel" aria-labelledby="nav-takeoff-tab" tabindex="0">
+                                            ...
+                                        </div>
+                                    </div>                                   
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-6">                            
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Map</h6>
+                                </div>
+                                <div class="card-body">                                    
+                                    <div id="gcMapContainer">
+                                        <iframe id="gcMap" width="100%" height="500">                                        
+                                        </iframe>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!--<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/store2@2.14.3/dist/store2.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    
+    <script src="papaparse.min.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+
+          //Update when these files change so cache can be reset
+          var zmeIdentifier = "202405230533P";
+          var acInfoIdentifier = "202405230533P";
+          var callsignIdentifier = "202405230533P";
+
+          var alertsCount = 0;
+
+          var urlParams = new URLSearchParams(window.location.search);
+          var callsignParam = urlParams?.get('callsign')?.toUpperCase(); 
+          var acTypeParam = urlParams?.get('acType')?.toUpperCase();           
+          var depParam = urlParams?.get('dep')?.toUpperCase(); 
+          var arrParam = urlParams?.get('arr')?.toUpperCase(); 
+          var filedAlt = urlParams?.get('filedAlt')?.toUpperCase(); 
+          var routeParam = urlParams?.get('route')?.toUpperCase() ?? ""; 
+          var squawk = urlParams?.get('squawk'); 
+          
+          var initFixJson;
+          var acJson;
+          var callsignJson;
+            $.ajax({
+                dataType: "json",
+                async: false,
+                url: 'data/zme.json?id=' + zmeIdentifier,
+                success: function(data) {initFixJson = data;
+                    //If the idenifier isn't the value here, force a reset to make sure we clear out any local storage
+                    if (initFixJson[0].forceResetIdentifier != "A") {
+                        store.clear();
+                    }
+                }});            
+            $.ajax({
+                dataType: "json",
+                async: false,
+                url: 'data/aircraftInfo.json?id=' + acInfoIdentifier,
+                success: function(data){acJson = data},
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                }}
+            );
+            $.ajax({
+                dataType: "json",
+                async: false,
+                url: 'data/callsignInfo.json?id=' + callsignIdentifier,
+                success: function(data){callsignJson=data}});
+
+            var aircraft;
+            if (acTypeParam) {
+                getAircraft();            
+            }
+
+            //Set initial data from params
+            $("#callsign").text(callsignParam);
+            $("#routeFiled").text(routeParam);
+            $("#routeFiledAltitude").text(filedAlt);
+            $("#clearanceFiledAltitude").text(filedAlt);                      
+            $(".squawkCode").text(squawk);
+
+            //Try to find DEP in live data            
+            var route;
+            var lastDataUpdate = store.get("lastDataUpdate");
+            const dateDifferenceInSeconds = (dateInitial, dateFinal) => (dateFinal - dateInitial) / 1_000;
+            if (!lastDataUpdate || dateDifferenceInSeconds(new Date(lastDataUpdate), new Date(), 's') > 15) {
+                $.ajax({ 
+                        type: 'GET',
+                        async: false, 
+                        url: 'https://data.vatsim.net/v3/vatsim-data.json',
+                        success: function (data) { 
+                            store.set("lastDataUpdate", new Date().toISOString());
+                            store.set("lastData", data);
+                            getFlight(data);
+                        },
+                        failure: function() {
+                            CheckJetTimeRestictedSid(routeParam.split(" "));
+                        }
+                });
+            }
+            else
+            {
+                var lastData = store.get("lastData");
+                getFlight(lastData);
+            }
+
+
+          var callsignInfo = store.get("callsign" + callsignParam.substring(0,3));
+          if (!callsignInfo || !callsignInfo.telephony) {
+            var filteredCallsigns = callsignJson.filter(function(a) { 
+                return a.code.toUpperCase() === callsignParam.substring(0,3).toUpperCase(); 
+                });
+                callsignInfo = filteredCallsigns[0];
+            store.set("callsign" + callsignParam.substring(0,3), callsignInfo);
+          }
+            
+            if (depParam && arrParam) {
+                var gcMapUrl = "https://www.greatcirclemap.com/roadmap?label=icao&unit=mi&routes=" + depParam + "-" + arrParam;
+                document.getElementById('gcMap').src = gcMapUrl;            
+                $("#gcMapContainer").append($("iframe").attr("src", gcMapUrl));
+
+                var depProceduresLink = "https://charts.navigraph.com/airport/" + depParam + "?section=Proc&chartCategory=ARR&informationSection=General&procedureSection=Departures&weatherSection=METAR&ATISSection=Real";
+                var arrProceduresLink = "https://charts.navigraph.com/airport/" + arrParam + "?section=Proc&chartCategory=ARR&informationSection=General&procedureSection=Arrivals&weatherSection=METAR&ATISSection=Real";
+
+                var deptaxiLink = "https://charts.navigraph.com/airport/" + depParam + "?section=Charts&chartCategory=APT&informationSection=General&procedureSection=Departures&weatherSection=METAR&ATISSection=Real";
+                var arrtaxiLink = "https://charts.navigraph.com/airport/" + arrParam + "?section=Charts&chartCategory=APT&informationSection=General&procedureSection=Departures&weatherSection=METAR&ATISSection=Real";
+                
+                $("#depProcedures").attr("href", depProceduresLink);
+                $("#arrProcedures").attr("href", arrProceduresLink);
+                $("#depTaxiChart").attr("href", deptaxiLink);
+                $("#arrTaxiChart").attr("href", arrtaxiLink);
+                $("#routeAnalyzerLink").attr("href", "https://www.flightaware.com/analysis/route.rvt?origin=" + depParam + "&destination=" + arrParam);
+            }
+            else
+            {
+                $("#depProcedures").addClass("d-none");
+                $("#arrProcedures").addClass("d-none");
+                $("#routeAnalyzerLink").addClass("d-none");
+            }            
+
+          // Converts from degrees to radians.
+          function toRadians(degrees) {
+            return degrees * Math.PI / 180;
+          };
+          
+          // Converts from radians to degrees.
+          function toDegrees(radians) {
+            return radians * 180 / Math.PI;
+          }
+
+          function getBearing(startLat, startLng, destLat, destLng){
+            startLat = toRadians(startLat);
+            startLng = toRadians(startLng);
+            destLat = toRadians(destLat);
+            destLng = toRadians(destLng);
+
+            y = Math.sin(destLng - startLng) * Math.cos(destLat);
+            x = Math.cos(startLat) * Math.sin(destLat) -
+                  Math.sin(startLat) * Math.cos(destLat) * Math.cos(destLng - startLng);
+            brng = Math.atan2(y, x);
+            brng = toDegrees(brng);
+            return (brng + 360) % 360;
+          }
+          
+            function getAircraft() {
+                aircraft = store.get("acInfo" + acTypeParam);
+                if (!aircraft || !aircraft.make || !aircraft.model || !aircraft.engineType || !aircraft.engineCount) {
+                    var filteredAircraft = acJson.filter(function(a) { 
+                        return a.acType.toUpperCase() === acTypeParam.toUpperCase(); 
+                    });
+                    aircraft = filteredAircraft[0];
+                    store.set("acInfo" + acTypeParam, aircraft);
+                }
+                
+                $("#make").text(aircraft?.make ?? "Invalid (" + acTypeParam + ")");
+                $("#model").text(aircraft?.model ?? "Invalid");
+                $("#engineType").text(aircraft?.engineType ?? "Invalid");
+                $("#engineCount").text(aircraft?.engineCount ?? "Invalid");
+                if (aircraft?.weight == "Heavy") { $("#heavyWeight").html(aircraft?.weight);}                
+            }
+
+            var departureAirport = store.get("airport" + depParam);
+            var arrivalAirport = store.get("airport" + arrParam);
+            var airportData;
+
+            if (!departureAirport || !arrivalAirport) 
+            {
+                airportData = store.get("aiportData");
+                if (!airportData) {
+                    Papa.parse("data/iata-icao.csv", {
+                        download: true,
+                        header: true,            
+                        dynamicTyping: true,
+                        complete: function(results) {
+                            console.log(results);
+                            airportData = results.data;
+                            store.set("airportData", airportData)
+                            getAirports();
+                        }
+                    });
+                }
+                else
+                {
+                    getAirports();
+                }
+            }
+            else
+            {
+                validateAltitude();
+            }
+
+            var flight;
+            function getFlight(data)
+            {
+                var onlineFlights = data.pilots;
+                var filteredFlight = onlineFlights.filter(function(t) { 
+                    return t.callsign.toUpperCase() === callsignParam.toUpperCase(); 
+                });
+                //Try looking in prefiles too
+                if (!filteredFlight || filteredFlight.length == 0) {
+                    filteredFlight = data?.prefiles?.filter(function(t) { 
+                    return t.callsign.toUpperCase() === callsignParam.toUpperCase(); 
+                });
+                }
+                if (filteredFlight && filteredFlight.length > 0) {
+                    flight = filteredFlight[0];
+                    
+                    if (!flight) {
+                        return;                    
+                    }
+                    route = flight?.flight_plan?.route;
+                    
+                    //If any of the GET params weren't set, try to get from current data feed
+                    if (!acTypeParam) {
+                        acTypeParam = flight.flight_plan.aircraft_short;
+                        getAircraft();
+                    }; 
+                    if (!depParam) depParam = flight.flight_plan.departure; 
+                    if (!arrParam) arrParam = flight.flight_plan.arrival; 
+                    if (!filedAlt) filedAlt = flight.flight_plan.altitude ?? "";
+                    if (!squawk)  squawk = flight.flight_plan.assigned_transponder ?? "1200";
+
+                    $("#routeFiled").text(route).removeClass("text-warning").addClass("text-success");
+                    $("#routeFiledAltitude").text(filedAlt);
+                    $("#clearanceFiledAltitude").text(filedAlt);                    
+                    $(".squawkCode").text(squawk);
+
+                    const waypoints = route.split(' ');
+                    $("#sid_dep").text(waypoints[0] ?? "");
+                    //$("#sid_trans").text(waypoints[1] ?? "Unknown");                    
+                    CheckJetTimeRestictedSid(waypoints);
+                }
+                else {
+                    CheckJetTimeRestictedSid(routeParam.split(" "));    
+                }
+            }
+
+            function CheckJetTimeRestictedSid(waypoints) {
+                $("#sid_dep").text(waypoints[0] ?? "");
+                $("#sid_trans").text(waypoints[1] ?? "Unknown");
+ 
+                var airportRecord = store.get("airportRecord" + depParam);
+                if (!airportRecord || !airportRecord.airport) {
+                    
+                    airportRecord = initFixJson
+                        ?.filter(airportRecord => airportRecord.airport == depParam)?.[0];
+                    
+                    store.set("airportRecord" + depParam, airportRecord);
+                }
+
+                var initFixForSid;
+                if (depParam && waypoints[0]) {
+                    initFixForSid = store.get("initFix-" + depParam.toUpperCase() + "-" + waypoints[0]);
+                    if (!initFixForSid || !initFixForSid.initialWaypoints) {
+                        
+                        initFixForSid = initFixJson
+                            ?.filter(airportRecord => airportRecord.airport == depParam)?.[0]
+                            ?.departures.filter(dep => waypoints[0].toUpperCase().startsWith(dep.dp.toUpperCase()))?.[0];
+                        
+                        store.set("initFix-" + depParam.toUpperCase() + "-" + waypoints[0]);
+                    }
+                }
+
+                var timeRestriction = initFixForSid
+                            ?.restrictions.filter(r => r.toUpperCase().startsWith("TIME:"))?.[0];
+                if (timeRestriction) {
+                    var startTimeHour = timeRestriction.substring(5, 7);
+                    var startTimeMinutes = timeRestriction.substring(7, 9);
+                    var endTimeHour = timeRestriction.substring(10, 12);
+                    var endTimeMinutes = timeRestriction.substring(12, 14);
+
+                    function convertTZ(date, tzString) {
+                        return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+                    }
+
+                    // Resulting value is regular Date() object
+                    const convertedDate = convertTZ(new Date(), airportRecord.timeZone ?? 'America/Chicago' );
+                    
+                    // to save 
+                    var startTime = convertTZ(new Date(), airportRecord.timeZone ?? 'America/Chicago' );
+                    startTime.setHours(startTimeHour);
+                    startTime.setMinutes(startTimeMinutes);
+                    
+                    var endTime = convertTZ(new Date(), airportRecord.timeZone ?? 'America/Chicago' );
+                    endTime.setHours(endTimeHour);
+                    endTime.setMinutes(endTimeMinutes);
+                    
+                    if ((convertedDate > endTime) || (convertedDate < startTime))
+                    {
+                        addAlert("INVALID SID - TIME RESTRICTED");
+                    }                    
+                }
+
+                var engineTypeRestriction = initFixForSid
+                            ?.restrictions.filter(r => r.toUpperCase().startsWith("ENGINE:"))?.[0];                            
+
+                if (engineTypeRestriction && engineTypeRestriction.split(":").pop().toUpperCase() != aircraft?.engineType?.toUpperCase()) {
+                    addAlert("INVALID SID - " + engineTypeRestriction.split(":").pop().toUpperCase() + " ONLY");
+                }
+                
+                //Is this a DP with a transition?
+                if (initFixForSid?.trans) {
+                    $("#sid_trans").text(initFixForSid?.trans);
+                }
+                else {
+                    $("#useTransition").addClass("d-none");
+                }
+
+                if (initFixForSid && initFixForSid.initialWaypoints) {
+                    var memInitFixTable = $("<table />").addClass("table table-striped-columns table-bordered");
+                    if (initFixForSid.alt) {
+                        memInitFixTable.append($("<caption>").html(initFixForSid.alt));
+                    }
+
+                    var tHead = $("<tr />");
+                    var tBody = $("<tr />");
+
+                    $.each(initFixForSid.initialWaypoints, function(i) {                            
+                        tHead.append($("<th scope='col' />").html(initFixForSid.initialWaypoints[i].runway));
+                        tBody.append($("<td />").html(initFixForSid.initialWaypoints[i].waypoint));
+                    });
+
+                    memInitFixTable.append($("<thead />").append(tHead));
+                    memInitFixTable.append($("<tBody />").append(tBody));
+
+                    $("#initFixContent").append(memInitFixTable);
+                    $("#initFixContainer").removeClass("d-none");
+                }
+
+                //Try init altitude by engine type, then default, then empty
+                var initAltitude = airportRecord?.initialAltitude?.[aircraft?.engineType?.toUpperCase()?? "XXX"] ?? airportRecord?.initialAltitude?.default ?? "XXXXX";               
+                $("#initAltitude").text(initAltitude);
+                $("#clearanceInitAlt").text(initAltitude);
+
+                
+                if (airportRecord?.vfr?.clearance) {
+                    $("#nav-clearanceVfr").text("");
+                    $.each(airportRecord?.vfr?.clearance, function(i, text) {
+                        $("#nav-clearanceVfr").append($("<div />").text(text));
+                    });
+                }                
+            }
+
+            function getAirports() {
+                if (depParam) {
+                departureAirport = airportData.filter(function(a) { 
+                    return a.icao?.toUpperCase() === depParam.toUpperCase(); 
+                })[0];
+                store.set("airport" + depParam, departureAirport);                
+                }
+
+                if (arrParam) {
+                    arrivalAirport = airportData.filter(function(a) { 
+                        return a.icao?.toUpperCase() === arrParam.toUpperCase(); 
+                    })[0];
+                    store.set("airport" + arrParam, arrivalAirport);
+                } 
+                validateAltitude();
+            }
+
+            function validateAltitude() {
+                $("#depAirportName").text(departureAirport?.airport ?? "Unknown");
+                $("#arrAirportName").text(arrivalAirport?.airport ?? "Unknown");
+                $("#clearanceArrival").text(arrivalAirport?.airport ?? "Unknown");
+                
+                var bearing = "";
+                //If not VFR, calculate direction of flight
+                if (!filedAlt?.toUpperCase().startsWith("V") && departureAirport && arrivalAirport) {
+                    bearing = getBearing(departureAirport.latitude, departureAirport.longitude, arrivalAirport.latitude, arrivalAirport.longitude);
+                    var filedAltNumber;
+                
+                    if (filedAlt?.startsWith("FL")) {
+                        filedAltNumber = filedAlt?.match(/\d+/gi) * 100;
+                    }
+                    else {
+                        filedAltNumber = filedAlt;
+                    }
+                    var filedAltThousand = filedAltNumber / 1000;
+                    var isOdd = filedAltThousand % 2;
+                    
+                    if (bearing >= 180 && bearing <= 359) {
+                        //Even - South West
+                        if (((filedAltThousand != '43') && (filedAltThousand != '47') && (filedAltThousand != '51')) &&
+                        isOdd)
+                        addAlert("Invalid Flight Level - Need Even (" + bearing.toFixed(1) +")");
+                    } 
+                    else
+                    {
+                        //Odd - North East
+                        if (((filedAltThousand == 43) && (filedAltThousand == 47) && (filedAltThousand == 51)) ||
+                        !isOdd)
+                        addAlert("Invalid Flight Level - Need Odd (" + bearing.toFixed(1) +")");
+                    }
+                }
+            }
+
+            function addAlert(text)
+            {                
+                if (alertsCount == 0)
+                {
+                    $("#alerts").text("");                    
+                }                
+                var newAlert = $("<div />").addClass("alert alert-danger").attr("role", "alert").text(text);
+                $("#alerts").append(newAlert);
+                
+                alertsCount++;
+
+                //On the first alert, make it visible
+                if (alertsCount == 1) {                    
+                    $("#alertBorder").removeClass("border-left-info");
+                    $("#alertBorder").addClass("border-left-danger");
+                    $("#alertHeader").removeClass("text-info");
+                    $("#alertHeader").addClass("text-danger");
+                    $("#alertContainer").removeClass("d-none");
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
