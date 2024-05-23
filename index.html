@@ -8,7 +8,7 @@
   <body>
     <h1>ZME Utilities</h1>
     <h2>Custom Alias</h2>
-    <p>This custom alias adds some helpers like getting navaid or callsign pronunciation</p>
+    <p>This <a href="https://crc.virtualnas.net/docs/#/?id=aliases">CRC custom alias</a> adds some helpers like getting navaid or callsign pronunciation</p>
     <ul>   
       <li>.val [Click aircraft] - Attempt to validate a flight plan for the selected aircraft</li>
       <li>.rof [Click aircraft] - Opens GCMap with departure/arrival</li>
@@ -18,7 +18,7 @@
       <li>.acInfo[aircraft type] - Sends a PM with info about the aircraft (e.g. .acinfoB738)</li>
       <li>.apt[apt] - Sends a PM with info about the airport (e.g. .aptMEM)</li>
     </ul>
-    <textarea>
+    <textarea rows="10">
 .val $context($1) .OPENURL https://mcal.github.io/zme/clearance_validate.html?callsign=$1&dep=$dep&arr=$arr&acType=$type($1)&filedAlt=$cruise&squawk=$squawk&route=$route
 .ROF $context($1) .openurl http://www.gcmap.com/mapui?P=$dep-$arr
 .ROFFA $context($1) .OPENURL https://flightaware.com/analysis/route.rvt?origin=$dep&destination=$arr
@@ -39289,6 +39289,19 @@
 .ACINFOZIA .MSG FAA_ISR *** [CODE] ZIA ::: [MAKE] APPLEBAY ::: [MODEL] Zia ::: [ENGINE] 1/PistonProp ::: [WEIGHT] Small ::: [C/D] 500/500 ::: [SRS] 1
 .ACINFOZIU .MSG FAA_ISR *** [CODE] ZIU ::: [MAKE] TAI ::: [MODEL] ZIU ::: [ENGINE] 1/PistonProp ::: [WEIGHT] Small ::: [C/D] 0/0 ::: [SRS] 1
 .ACINFOZULU .MSG FAA_ISR *** [CODE] ZULU ::: [MAKE] BUL ::: [MODEL] Zulu ::: [ENGINE] 1/PistonProp ::: [WEIGHT] Small ::: [C/D] 0/0 ::: [SRS] 1
+    </textarea>
+
+    <h2>Route Validator</h2>
+    <p>The route validator will show details for the flight and will attempts to pull in data from the VATSIM feed for the selected aircraft to validate based on ZME standards. The page will also try to determine the initial waypoint from the ZME reference card if enough information is available. Links to charts will require Navigraph.</p>
+    <ul>   
+      <li>ALL - Altitide valid for direction of flight</li>
+      <li>Memphis - Time restricted SIDs</li>
+      <li>Memphis - JET routes</li>
+    </ul>
+    <p>To use, be sure to add a <a href="https://crc.virtualnas.net/docs/#/?id=aliases">CRC custom alias</a>. If not copying from above, the minimum addition is the following:      
+    </p>
+    <textarea>
+      .val $context($1) .OPENURL https://mcal.github.io/zme/clearance_validate.html?callsign=$1&dep=$dep&arr=$arr&acType=$type($1)&filedAlt=$cruise&squawk=$squawk&route=$route</p>
     </textarea>
   </body>
 </html>
