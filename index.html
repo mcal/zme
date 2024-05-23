@@ -20,7 +20,7 @@
         <li>.acInfo[aircraft type] - Sends a PM with info about the aircraft (e.g. .acinfoB738)</li>
         <li>.apt[apt] - Sends a PM with info about the airport (e.g. .aptMEM)</li>
       </ul>
-      <textarea rows="10" cols="80">
+      <textarea rows="10" cols="120">
   .val $context($1) .OPENURL https://mcal.github.io/zme/clearance_validate.html?callsign=$1&dep=$dep&arr=$arr&acType=$type($1)&filedAlt=$cruise&squawk=$squawk&route=$route
   .ROF $context($1) .openurl http://www.gcmap.com/mapui?P=$dep-$arr
   .ROFFA $context($1) .OPENURL https://flightaware.com/analysis/route.rvt?origin=$dep&destination=$arr
@@ -39302,7 +39302,7 @@
       </ul>
       <p>To use, be sure to add a <a href="https://crc.virtualnas.net/docs/#/?id=aliases">CRC custom alias</a>. If not copying from above, the minimum addition is the following:      
       </p>
-      <textarea rows="1" cols="80">
+      <textarea rows="1" cols="120">
         .val $context($1) .OPENURL https://mcal.github.io/zme/clearance_validate.html?callsign=$1&dep=$dep&arr=$arr&acType=$type($1)&filedAlt=$cruise&squawk=$squawk&route=$route</p>
       </textarea>
       </div>
